@@ -4,8 +4,7 @@ import glob
 import numpy as np
 from keras.utils import generic_utils
 from myModel_64x64to256x256 import create_models
-from TFNetDataset_UpSampling import dir_data_generator
-import matplotlib.pyplot as plt
+from myDataset_UpSampling import dir_data_generator
 
 import scipy.misc
 from scipy import ndimage, misc
