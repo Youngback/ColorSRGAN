@@ -1,38 +1,39 @@
 import os
 import time
-import glob
-import numpy as np
 import scipy.misc
-import imageio
+import cv2 as cv
 
 from processing import inference
 
 # init parameter
-learning_rate = 0.0005
-momentum = 0.5
-lambda_1 = 1
-lambda_2 = 100
 weight_path = './weightData/weights_MyDataset_64x64to256x256_gen.hdf5'
 
 # image path
-path = '../Datasets/MyDataset/test_IR64x64/'
-save_path = '../Result/'
+path = './sample_images/'
+save_path = path + 'result/'
+
+if not os.path.exists(save_path):
+	os.mkdir(save_path)
 
 # create network
-net = inference(learning_rate, momentum, lambda_1, lambda_2, weight_path)
+net = inference(weight_path=weight_path)
 
 # read image directory
-fname = np.array(sorted(glob.glob(path + '*.jpg')))
+included_extensions = ['jpg', 'jpeg', 'bmp', 'png', 'gif']
 
+file_names = [fn for fn in os.listdir(path)
+              if any(fn.endswith(ext) for ext in included_extensions)]
 
-for i in range(len(fname)):
+for i in range(len(file_names)):
 
 	# read image
-	img = imageio.imread(fname[i])
+	img = cv.imread(path + file_names[i], cv.IMREAD_GRAYSCALE)
 
 	# inference
+	tic = time.time()
 	output = net.predict(img)
+	toc = time.time()
+	print(file_names[i], 'inference time =', toc - tic)
 
 	# write image
-	scipy.misc.toimage(output).save(save_path + fname[i])
-
+	#scipy.misc.toimage(output).save(save_path + file_names[i])
