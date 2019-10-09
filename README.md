@@ -1,8 +1,8 @@
-## **Infrared image colorization based on an unbalanced dcgan ##
+## *Infrared image colorization based on an unbalanced dcgan ##
 
 ###Requirments
->nvidia gtx1080 11GB
->ubuntu 16.04 LTS
->python version = 3.xx
->Backend: Tensorflow 1.7
->Keras
+* nvidia gtx1080 11GB
+* ubuntu 16.04 LTS
+* python version = 3.xx
+* Backend: Tensorflow 1.7
+* Keras
