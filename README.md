@@ -1,6 +1,6 @@
-## *Infrared image colorization based on an unbalanced dcgan ##
+## Infrared image colorization based on an unbalanced dcgan ##
 
-###Requirments
+### Requirments
 * nvidia gtx1080 11GB
 * ubuntu 16.04 LTS
 * python version = 3.xx
