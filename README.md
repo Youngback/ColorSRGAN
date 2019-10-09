@@ -5,7 +5,7 @@ If you wish to contact me, mail to kyb7902@gmail.com
 Spec of this project is 
 * NDIVIA GTX1080 11GB
 * UBUNTU 16.04 LTS
-* Tensorflow 1.7
+* Backend: Tensorflow 1.7
 * Keras
 
 Summary
