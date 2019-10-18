@@ -2,6 +2,7 @@ import os
 import time
 import scipy.misc
 import cv2 as cv
+import numpy as np
 
 from processing import inference
 
@@ -28,6 +29,7 @@ for i in range(len(file_names)):
 
 	# read image
 	img = cv.imread(path + file_names[i], cv.IMREAD_GRAYSCALE)
+	img = img.astype('float')
 
 	# inference
 	tic = time.time()

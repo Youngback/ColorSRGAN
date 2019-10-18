@@ -6,27 +6,22 @@ from skimage import color
 from my_model import create_models
 
 class inference:
-    def __init__(self, weight_path, learning_rate=0.0005, momentum=0.5, lambda_1=1, lambda_2=100, init_size=64):
+    def __init__(self, weight_path, learning_rate=0.0005, momentum=0.5, init_size=64):
         '''
         init parameter and create network
         :param learning_rate: when training, learning rate, default 0.0005
         :param momentum: when training, momentum optimization hyper-parameter, default 0.5
-        :param lambda_1: default 1
-        :param lambda_2: default 100
         :param weight_path: pre-trained network weight path
         :param init_size: input image width, height size, default 64
         '''
 
-        self.model_gen, self.model_dis, self.model_gan = create_models(
-            input_shape_gen_64=(init_size, init_size, 1),
-            input_shape_gen_128=(init_size*2, init_size*2, 1),
-            input_shape_gen_256=(init_size*4, init_size*4, 1),
-            input_shape_gen_Origin256=(init_size*4, init_size*4, 1),
-            input_shape_dis=(init_size*4, init_size*4, 4),
-            output_channels=3,
+        self.model_gen = create_models(
+            shape_1_img=(init_size, init_size, 1),
+            shape_2_img=(init_size*2, init_size*2, 1),
+            shape_3_img=(init_size*4, init_size*4, 1),
+            output_ch=3,
             lr=learning_rate,
-            momentum=momentum,
-            loss_weights=[lambda_1, lambda_2])
+            momentum=momentum)
 
         if os.path.exists(weight_path):
             self.model_gen.load_weights(weight_path)
