@@ -19,6 +19,10 @@
 
 ## 3. Performance
 * 64x64 to 256x256 size image
+* (A) : bilinear interpolation + Colorization
+* (B) : bicubic interpolation + Colorization
+* (C) : FSRCNN super-resolution + Colorization
+* (D) : Unbalanced DCGAN
 
 ### 3.1 Inference GPU
 * NVIDIA GTX1080 11GB
