@@ -13,10 +13,10 @@
 
 ### Model
 #### GAN
-![GAN](./readme/model.png "GAN")
+![GAN](./readme/model.PNG)
 
 #### generator
-![GENERATOR](./readme/model generator.png)
+![GENERATOR](./readme/model generator.PNG)
 
 #### discriminator
 ![DISCRIMINATOR](./readme/model discriminator.png)
@@ -31,20 +31,19 @@
 * keras (backend tensorflow)
 
 time(msec)|(A)|(B)|(C)|(D)
----|:---:|---:|---:|---:
+:---:|:---:|:---:|:---:|:---:
 inference|5.035|7.127|4.110|5.260
 
 #### inference CPU
-* intel core i7-7500U
-(TODO)
+* intel core i7-7500U(TODO)
 
 ---------------------------------------
 
 ### Result
 #### NIR (near infrared) images
-![NIR](./readme/result nir.png)
+![NIR](./readme/result nir.PNG)
 
 #### FIR (far infrared) images
-![FIR](./readme/result fir.png)
+![FIR](./readme/result fir.PNG)
 
 
