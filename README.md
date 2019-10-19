@@ -16,7 +16,7 @@
 
 ### discriminator
 ![DISCRIMINATOR](./readme/model_discriminator.png)
----------------------------------------
+
 ## Performance
 * 64x64 to 256*256 size image
 
@@ -30,7 +30,7 @@ inference|5.035|7.127|4.110|5.260
 
 ### inference CPU
 * intel core i7-7500U(TODO)
----------------------------------------
+
 ## Result
 ### NIR (near infrared) images
 ![NIR](./readme/result_nir.PNG)
