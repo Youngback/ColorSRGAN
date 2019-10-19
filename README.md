@@ -1,41 +1,41 @@
 # Infrared image colorization based on an unbalanced dcgan #
 
-## Requirments
-* nvidia gtx1080 11GB
-* ubuntu 16.04 LTS
-* python version = 3.xx
-* backend: Tensorflow 1.7
-* keras
+## 1. Requirments
+* Nvidia gtx1080 11GB
+* Ubuntu 16.04 LTS
+* Python Version = 3.xx
+* Backend: Tensorflow 1.7
+* Keras, Tensorflow
 
-## Model
-### GAN
+## 2. Model
+### 2.1 GAN
 ![GAN](./readme/model.PNG)
 
-### generator
+### 2.2 Generator
 ![GENERATOR](./readme/model_generator.PNG)
 
-### discriminator
+### 2.3 Discriminator
 ![DISCRIMINATOR](./readme/model_discriminator.png)
 
-## Performance
-* 64x64 to 256*256 size image
+## 3. Performance
+* 64x64 to 256x256 size image
 
-### inference GPU
-* nvidia gtx1080 11GB
-* keras (backend tensorflow)
+### 3.1 Inference GPU
+* Nvidia gtx1080 11GB
+* Keras (backend tensorflow)
 
-time(msec)|(A)|(B)|(C)|(D)
+Time(msec)|(A)|(B)|(C)|(D)
 :---:|:---:|:---:|:---:|:---:
-inference|5.035|7.127|4.110|5.260
+Inference|5.035|7.127|4.110|5.260
 
-### inference CPU
-* intel core i7-7500U(TODO)
+### 3.2 Inference CPU
+* Intel core i7-7500U(TODO)
 
-## Result
-### NIR (near infrared) images
+## 4. Result
+### 4.1 NIR (Near infrared) images
 ![NIR](./readme/result_nir.PNG)
 
-### FIR (far infrared) images
+### 4.2 FIR (Far infrared) images
 ![FIR](./readme/result_fir.PNG)
 
 
