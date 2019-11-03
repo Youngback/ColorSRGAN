@@ -40,6 +40,7 @@ Time(msec)|(A)|(B)|(C)|(D)
 Inference| | | |150.059
 
 ## 4. Result
+64x64x1 infrared image to 256x256x3 RGB image
 ### 4.1 NIR (Near infrared) images
 ![NIR](./readme/result_nir.PNG)
 
