@@ -35,6 +35,10 @@ Inference|5.035|7.127|4.110|5.260
 ### 3.2 Inference CPU
 * Intel core i7-7500U(TODO)
 
+Time(msec)|(A)|(B)|(C)|(D)
+:---:|:---:|:---:|:---:|:---:
+Inference| | | |150.059
+
 ## 4. Result
 ### 4.1 NIR (Near infrared) images
 ![NIR](./readme/result_nir.PNG)
