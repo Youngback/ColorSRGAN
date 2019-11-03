@@ -49,8 +49,10 @@ class inference:
         img_2 = self.img_reshape(img, 2)
         img_3 = self.img_reshape(img, 4)
 
+        # predict image
         output = self.model_gen.predict([img_1, img_2, img_3])[0]
 
+        # extract network output
         result = np.clip(np.abs(color.lab2rgb(output)), 0, 1)
 
         return result

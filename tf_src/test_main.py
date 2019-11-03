@@ -1,41 +1,51 @@
+import argparse
 import os
 import time
-import scipy.misc
+
 import cv2 as cv
-import numpy as np
+import scipy.misc
 
 from processing import inference
 
-# init parameter
-weight_path = './weightData/my_gen.hdf5'
+def predict(args):
+	# init parameter
+	weight_path = args.model
+	path = args.input
+	save_path = args.output
 
-# image path
-path = './sample_images/'
-save_path = path + 'result/'
+	if not os.path.exists(save_path):
+		os.makedirs(save_path)
 
-if not os.path.exists(save_path):
-	os.mkdir(save_path)
+	# create network
+	net = inference(weight_path=weight_path)
 
-# create network
-net = inference(weight_path=weight_path)
+	# read image directory
+	included_extensions = ['jpg', 'jpeg', 'bmp', 'png', 'gif']
 
-# read image directory
-included_extensions = ['jpg', 'jpeg', 'bmp', 'png', 'gif']
+	file_names = [fn for fn in os.listdir(path)
+				  if any(fn.endswith(ext) for ext in included_extensions)]
 
-file_names = [fn for fn in os.listdir(path)
-              if any(fn.endswith(ext) for ext in included_extensions)]
+	for i in range(len(file_names)):
 
-for i in range(len(file_names)):
+		# read image
+		img = cv.imread(path + file_names[i], cv.IMREAD_GRAYSCALE)
+		img = img.astype('float')
 
-	# read image
-	img = cv.imread(path + file_names[i], cv.IMREAD_GRAYSCALE)
-	img = img.astype('float')
+		# inference
+		tic = time.time()
+		output = net.predict(img)
+		toc = time.time()
+		print(file_names[i], 'inference time(sec) =', toc - tic)
 
-	# inference
-	tic = time.time()
-	output = net.predict(img)
-	toc = time.time()
-	print(file_names[i], 'inference time =', toc - tic)
+		# write image
+		scipy.misc.toimage(output).save(save_path + file_names[i])
 
-	# write image
-	scipy.misc.toimage(output).save(save_path + file_names[i])
+if __name__ == '__main__':
+
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--model', '-m', dest='model', default='./weightData/my_gen.hdf5', help='inference network model')
+	parser.add_argument('--input', '-i', dest='input', default='./sample_images/', help='input images path')
+	parser.add_argument('--output', '-o', dest='output', default='./sample_images/result/', help='output images path')
+	args = parser.parse_args()
+
+	predict(args)

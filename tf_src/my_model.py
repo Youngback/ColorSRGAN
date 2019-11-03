@@ -1,9 +1,9 @@
-import numpy as np
+import tensorflow.keras as keras
 from tensorflow.keras import layers
-from tensorflow.keras import optimizers
-from tensorflow.keras import models
 from tensorflow.keras import backend
-from tensorflow import keras
+from tensorflow.keras import layers
+from tensorflow.keras import models
+from tensorflow.keras import optimizers
 
 def eacc(y_true, y_pred):
     return backend.mean(backend.equal(backend.round(y_true), backend.round(y_pred)))
