@@ -77,11 +77,13 @@ def create_model_gen(shape_1_img, shape_2_img, shape_3_img, output_ch):
 
     # Add Up-Sampling layer
     up10 = create_conv(32, (2, 2), layers.UpSampling2D((2, 2))(conv8), 'up10')
+    # modify upsampling layer (bicubic interpolation)
     merge10 = layers.concatenate([up10, input_2], axis=3)
     conv10 = create_conv(32, (3, 3), merge10, 'conv10_1', activation='relu')
     conv10 = create_conv(32, (3, 3), conv10, 'conv10_2', activation='relu')
 
     up11 = create_conv(16, (2, 2), layers.UpSampling2D((2, 2))(conv10), 'up11')
+    # modify upsampling layer (bicubic interpolation)
     merge11 = layers.concatenate([up11, input_3], axis=3)
 
     conv11 = layers.Conv2D(output_ch, (1, 1), padding='same', name='conv11')(merge11)
