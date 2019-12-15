@@ -1,11 +1,10 @@
 import argparse
-import os
 import time
 
-import cv2 as cv
+import cv2
 
-from processing import inference
 import utils
+from processing import inference
 
 
 def predict(args):
@@ -23,10 +22,12 @@ def predict(args):
 	# read image file names
 	file_names = utils.getImageFileName(path)
 
+	output_images = []
+
 	for i in range(len(file_names)):
 
 		# read image
-		img = cv.imread(path + file_names[i], cv.IMREAD_GRAYSCALE)
+		img = cv2.imread(path + file_names[i], cv2.IMREAD_GRAYSCALE)
 		img = img.astype('float')
 
 		# inference
@@ -35,8 +36,10 @@ def predict(args):
 		toc = time.time()
 		print(file_names[i], 'inference time(sec) =', toc - tic)
 
-		# write image
+		output_images.append(output)
 
+	# image write
+	utils.imageWrite(save_path, file_names, output_images)
 
 if __name__ == '__main__':
 

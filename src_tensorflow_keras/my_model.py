@@ -30,13 +30,8 @@ def create_conv(filters, kernel_size, inputs, name=None, bn=True, dropout=0., pa
     return conv
 
 
-def create_model_gen(shape_input_img, output_ch):
-    '''
-    create model generator network
-    :param shape_1_img: input image shape (64, 64, 1)
-    :param output_ch: output image channel size
-    :return: created network
-    '''
+def create_model_gen(shape_input_img, shape_output_img):
+
     input_1 = layers.Input(shape_input_img)
     input_2 = layers.UpSampling2D((2, 2))(input_1)
     input_3 = layers.UpSampling2D((2, 2))(input_2)
@@ -72,7 +67,6 @@ def create_model_gen(shape_input_img, output_ch):
     conv8 = create_conv(64, (3, 3), merge8, 'conv8_1', activation='relu')
     conv8 = create_conv(64, (3, 3), conv8, 'conv8_2', activation='relu')
 
-    # Add Up-Sampling layer
     up10 = create_conv(32, (2, 2), layers.UpSampling2D((2, 2))(conv8), 'up10')
     merge10 = layers.concatenate([up10, input_2], axis=3)
     conv10 = create_conv(32, (3, 3), merge10, 'conv10_1', activation='relu')
@@ -81,25 +75,19 @@ def create_model_gen(shape_input_img, output_ch):
     up11 = create_conv(16, (2, 2), layers.UpSampling2D((2, 2))(conv10), 'up11')
     merge11 = layers.concatenate([up11, input_3], axis=3)
 
-    conv11 = layers.Conv2D(output_ch, (1, 1), padding='same', name='conv11')(merge11)
+    conv11 = layers.Conv2D(shape_output_img, (1, 1), padding='same', name='conv11')(merge11)
 
     model = models.Model(inputs=input_1, outputs=conv11, name='generator')
 
     return model
 
 
-def create_models(shape_input_img, output_ch, lr, momentum):
-    '''
-    create networks
-    :param shape_input_img: input image shape (64, 64, 1)
-    :param output_ch: output image channel size
-    :param lr: learning rate
-    :param momentum: optimization momentum hyper-parameter for training
-    :return: created model
-    '''
+def create_models(shape_input_img, shape_output_img, lr, momentum):
+
     op = optimizers.Adam(lr=lr, beta_1=momentum)
 
-    model_gen = create_model_gen(shape_input_img, output_ch=output_ch)
+    model_gen = create_model_gen(shape_input_img, shape_output_img=shape_output_img)
+
     model_gen.compile(loss=keras.losses.mean_absolute_error, optimizer=op)
 
     return model_gen
