@@ -1,5 +1,4 @@
 import tensorflow.keras as keras
-from tensorflow.keras import layers
 from tensorflow.keras import backend
 from tensorflow.keras import layers
 from tensorflow.keras import models
@@ -31,18 +30,16 @@ def create_conv(filters, kernel_size, inputs, name=None, bn=True, dropout=0., pa
     return conv
 
 
-def create_model_gen(shape_1_img, shape_2_img, shape_3_img, output_ch):
+def create_model_gen(shape_input_img, output_ch):
     '''
     create model generator network
     :param shape_1_img: input image shape (64, 64, 1)
-    :param shape_2_img: input image shape (128, 128, 1)
-    :param shape_3_img: input image shape (256, 256, 1)
     :param output_ch: output image channel size
     :return: created network
     '''
-    input_1 = layers.Input(shape_1_img)
-    input_2 = layers.Input(shape_2_img)
-    input_3 = layers.Input(shape_3_img)
+    input_1 = layers.Input(shape_input_img)
+    input_2 = layers.UpSampling2D((2, 2))(input_1)
+    input_3 = layers.UpSampling2D((2, 2))(input_2)
 
     # U-Net
     conv2 = create_conv(64, (3, 3), input_1, 'conv2_1', activation='leakyrelu')
@@ -77,28 +74,24 @@ def create_model_gen(shape_1_img, shape_2_img, shape_3_img, output_ch):
 
     # Add Up-Sampling layer
     up10 = create_conv(32, (2, 2), layers.UpSampling2D((2, 2))(conv8), 'up10')
-    # modify upsampling layer (bicubic interpolation)
     merge10 = layers.concatenate([up10, input_2], axis=3)
     conv10 = create_conv(32, (3, 3), merge10, 'conv10_1', activation='relu')
     conv10 = create_conv(32, (3, 3), conv10, 'conv10_2', activation='relu')
 
     up11 = create_conv(16, (2, 2), layers.UpSampling2D((2, 2))(conv10), 'up11')
-    # modify upsampling layer (bicubic interpolation)
     merge11 = layers.concatenate([up11, input_3], axis=3)
 
     conv11 = layers.Conv2D(output_ch, (1, 1), padding='same', name='conv11')(merge11)
 
-    model = models.Model(inputs=[input_1, input_2, input_3], outputs=conv11, name='generator')
+    model = models.Model(inputs=input_1, outputs=conv11, name='generator')
 
     return model
 
 
-def create_models(shape_1_img, shape_2_img, shape_3_img, output_ch, lr, momentum):
+def create_models(shape_input_img, output_ch, lr, momentum):
     '''
     create networks
-    :param shape_1_img: input image shape (64, 64, 1)
-    :param shape_2_img: input image shape (128, 128, 1)
-    :param shape_3_img: input image shape (256, 256, 1)
+    :param shape_input_img: input image shape (64, 64, 1)
     :param output_ch: output image channel size
     :param lr: learning rate
     :param momentum: optimization momentum hyper-parameter for training
@@ -106,7 +99,7 @@ def create_models(shape_1_img, shape_2_img, shape_3_img, output_ch, lr, momentum
     '''
     op = optimizers.Adam(lr=lr, beta_1=momentum)
 
-    model_gen = create_model_gen(shape_1_img, shape_2_img, shape_3_img, output_ch=output_ch)
+    model_gen = create_model_gen(shape_input_img, output_ch=output_ch)
     model_gen.compile(loss=keras.losses.mean_absolute_error, optimizer=op)
 
     return model_gen

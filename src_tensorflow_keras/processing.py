@@ -16,9 +16,7 @@ class inference:
         '''
 
         self.model_gen = create_models(
-            shape_1_img=(init_size, init_size, 1),
-            shape_2_img=(init_size*2, init_size*2, 1),
-            shape_3_img=(init_size*4, init_size*4, 1),
+            shape_input_img=(init_size, init_size, 1),
             output_ch=3,
             lr=learning_rate,
             momentum=momentum)
@@ -45,14 +43,12 @@ class inference:
         :param img: original input image
         :return: output image
         '''
-        img_1 = self.img_reshape(img, 1)
-        img_2 = self.img_reshape(img, 2)
-        img_3 = self.img_reshape(img, 4)
+        input_tensor = self.img_reshape(img, 1)
 
         # predict image
-        output = self.model_gen.predict([img_1, img_2, img_3])[0]
+        output_tensor = self.model_gen.predict(input_tensor)[0]
 
         # extract network output
-        result = np.clip(np.abs(color.lab2rgb(output)), 0, 1)
+        result = np.clip(np.abs(color.lab2rgb(output_tensor)), 0, 1)
 
         return result

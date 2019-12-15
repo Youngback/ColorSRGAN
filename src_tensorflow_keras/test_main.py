@@ -38,7 +38,7 @@ def predict(args):
 		print(file_names[i], 'inference time(sec) =', toc - tic)
 
 		# write image
-		scipy.misc.toimage(output).save(save_path + file_names[i])
+		# scipy.misc.toimage(output).save(save_path + file_names[i])
 
 if __name__ == '__main__':
 
