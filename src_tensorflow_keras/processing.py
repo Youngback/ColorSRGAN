@@ -23,7 +23,7 @@ class inference:
 
     def predict(self, img):
 
-        input_tensor = utils.img_reshape(img, 1)
+        input_tensor = utils.ImageReshape(img, 1)
 
         # predict image
         output_tensor = self.model_gen.predict(input_tensor)[0]

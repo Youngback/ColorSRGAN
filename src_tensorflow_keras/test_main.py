@@ -1,5 +1,6 @@
 import argparse
 import time
+import os
 
 import cv2
 
@@ -14,32 +15,30 @@ def predict(args):
 	path = args.input
 	save_path = args.output
 
-	utils.createDir(save_path)
+	utils.CreateDir(save_path)
 
 	# create network
 	net = inference(weight_path=weight_path)
 
 	# read image file names
-	file_names = utils.getImageFileName(path)
+	file_names = utils.GetImageFileName(path)
 
-	output_images = []
-
-	for i in range(len(file_names)):
+	for file_name in file_names:
 
 		# read image
-		img = cv2.imread(path + file_names[i], cv2.IMREAD_GRAYSCALE)
+		img = cv2.imread(path + file_name, cv2.IMREAD_GRAYSCALE)
 		img = img.astype('float')
 
 		# inference
 		tic = time.time()
 		output = net.predict(img)
 		toc = time.time()
-		print(file_names[i], 'inference time(sec) =', toc - tic)
+		print(output.shape)
+		print(file_name, 'inference time(sec) =', toc - tic)
 
-		output_images.append(output)
+		# image write
+		# utils.ImageWrite(os.path.join(save_path, file_name), output)
 
-	# image write
-	utils.imageWrite(save_path, file_names, output_images)
 
 if __name__ == '__main__':
 
