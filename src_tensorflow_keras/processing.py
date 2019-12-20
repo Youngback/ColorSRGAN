@@ -29,6 +29,6 @@ class inference:
         output_tensor = self.model_gen.predict(input_tensor)[0]
 
         # extract network output
-        result = np.clip(np.abs(color.lab2rgb(output_tensor)), 0, 255)
+        result = np.clip(np.abs(color.lab2rgb(output_tensor)), 0, 1)
 
         return result
