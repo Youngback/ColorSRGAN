@@ -33,11 +33,10 @@ def test(args):
 		tic = time.time()
 		output = net.predict(img)
 		toc = time.time()
-		print(output.shape)
 		print(file_name, 'inference time(sec) =', toc - tic)
 
 		# image write
-		# utils.ImageWrite(os.path.join(save_path, file_name), output)
+		utils.image_write(os.path.join(save_path, file_name), output)
 
 
 if __name__ == '__main__':
