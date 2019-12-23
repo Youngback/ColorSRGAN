@@ -5,23 +5,23 @@ import os
 import cv2
 
 import utils
-from processing import inference
+from processing import Inference
 
 
-def predict(args):
+def test(args):
 
 	# init parameter
 	weight_path = args.model
 	path = args.input
 	save_path = args.output
 
-	utils.CreateDir(save_path)
+	utils.create_dir(save_path)
 
 	# create network
-	net = inference(weight_path=weight_path)
+	net = Inference(weight_path=weight_path)
 
 	# read image file names
-	file_names = utils.GetImageFileName(path)
+	file_names = utils.get_image_file_name(path)
 
 	for file_name in file_names:
 
@@ -48,4 +48,4 @@ if __name__ == '__main__':
 	parser.add_argument('--output', '-o', dest='output', default='./sample_images/result/', help='output images path')
 	args = parser.parse_args()
 
-	predict(args)
+	test(args)

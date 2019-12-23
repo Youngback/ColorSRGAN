@@ -4,10 +4,10 @@ import numpy as np
 from skimage import color
 
 import utils
-from my_model import create_models
+from model import create_models
 
 
-class inference:
+class Inference:
 
     def __init__(self, weight_path, learning_rate=0.0005, momentum=0.5, init_size=64):
 
@@ -23,10 +23,10 @@ class inference:
 
     def predict(self, img):
 
-        input_tensor = utils.ImageReshape(img, 1)
+        input_tensor = utils.image_reshape(img, 1)
 
         # predict image
-        output_tensor = self.model_gen.predict(input_tensor)[0]
+        output_tensor = self.model_gen.test(input_tensor)[0]
 
         # extract network output
         result = np.clip(np.abs(color.lab2rgb(output_tensor)), 0, 1)
