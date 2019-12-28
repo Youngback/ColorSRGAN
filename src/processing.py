@@ -4,20 +4,17 @@ import numpy as np
 from skimage import color
 
 import utils
-from model import create_models
-
+from model import create_model_gen
 
 class Inference:
 
-    def __init__(self, weight_path, learning_rate=0.0005, momentum=0.5, init_size=(640, 480)):
+    def __init__(self, weight_path, learning_rate=0.0005, momentum=0.5, init_size=(640, 480, 1)):
 
         self.init_size = init_size
 
-        self.model_gen = create_models(
-            shape_input_img=(self.init_size[1], self.init_size[0], 1),
-            shape_output_img=3,
-            lr=learning_rate,
-            momentum=momentum)
+        self.model_gen = create_model_gen(
+            input_shape=self.init_size,
+            output_channels=3)
 
         if os.path.exists(weight_path):
             self.model_gen.load_weights(weight_path)
