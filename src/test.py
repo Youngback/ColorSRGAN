@@ -3,9 +3,49 @@ import time
 import os
 
 import cv2
+import numpy as np
+from skimage import color
 
 import utils
-from processing import Inference
+import config as cfg
+from model import create_model_gen
+
+
+class Inference:
+
+    def __init__(self, weight_path, init_size=(480, 640, 1)):
+	'''
+	inference network initialize
+	:param weight_path: generator weight path
+	:param init_size: input tensor shape (HWC)
+	'''
+
+        self.init_size = init_size
+
+        self.model_gen = create_model_gen(
+            input_shape=self.init_size,
+            output_channels=3)
+
+        if os.path.exists(weight_path):
+            self.model_gen.load_weights(weight_path)
+
+    def process(self, img):
+	'''
+	process run
+	:param img: input image
+	:return: result image
+	'''
+
+		# input image reshape
+        input_tensor = utils.image_reshape(img, self.init_size)
+
+		# predict image
+        output_tensor = self.model_gen.predict(input_tensor)[0]
+
+		# change LAB to RGB color space & stretching (0, 1) to (0, 255)
+        result = np.clip(np.abs(color.lab2rgb(output_tensor)), 0, 1) * 255
+
+        return result
 
 
 def test(args):
@@ -31,7 +71,7 @@ def test(args):
 
 		# inference
 		tic = time.time()
-		output = net.predict(img)
+		output = net.process(img)
 		toc = time.time()
 		print(file_name, 'inference time(sec) =', toc - tic)
 
@@ -42,9 +82,9 @@ def test(args):
 if __name__ == '__main__':
 
 	parser = argparse.ArgumentParser()
-	parser.add_argument('--model', '-m', dest='model', default='./weightData/my_gen.hdf5', help='inference network model')
-	parser.add_argument('--input', '-i', dest='input', default='./sample_images/', help='input images path')
-	parser.add_argument('--output', '-o', dest='output', default='./sample_images/result/', help='output images path')
+	parser.add_argument('--model', '-M', dest='model', default='./weightData/my_gen.hdf5', help='inference network model')
+	parser.add_argument('--input', '-I', dest='input', default='./sample_images/', help='input images path')
+	parser.add_argument('--output', '-O', dest='output', default='./sample_images/result/', help='output images path')
 	args = parser.parse_args()
 
 	test(args)
