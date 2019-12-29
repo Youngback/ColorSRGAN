@@ -1,13 +1,14 @@
 import os
 import time
-import glob
+
 import numpy as np
 from tensorflow.keras.utils import Progbar
-from model import create_models
-from dataset import dir_data_generator
+
 import config as cfg
+from dataset import dir_data_generator
+from model import create_models
 
-
+print('[*] Build ColorSRGAN model ...')
 model_gen, model_dis, model_gan = create_models(
 	input_shape_gen=cfg.INPUT_SHAPE_GEN,
 	input_shape_dis=cfg.INPUT_SHAPE_DIS,
@@ -17,6 +18,7 @@ model_gen, model_dis, model_gan = create_models(
 	momentum=cfg.MOMENTUM,
 	loss_weights=[cfg.LAMBDA1, cfg.LAMBDA2])
 
+print('[*] Load pre-trained weight ...')
 if os.path.exists(cfg.WEIGHTS_GEN):
 	model_gen.load_weights(cfg.WEIGHTS_GEN)
 
@@ -26,15 +28,15 @@ if os.path.exists(cfg.WEIGHTS_DIS):
 if os.path.exists(cfg.WEIGHTS_GAN):
 	model_gan.load_weights(cfg.WEIGHTS_GAN)
 
-
+print('[*] Load dataset ...')
 data_gen = dir_data_generator(batch_size=cfg.BATCH_SIZE, data_range=(0, cfg.TRAIN_SIZE), outType='LAB')
-
 test_data_gen = dir_data_generator(batch_size=cfg.BATCH_SIZE, data_range=(cfg.TRAIN_SIZE, cfg.TOTAL_SIZE), outType='LAB')
 
 loss_gen = []
 loss_ave_gen = []
 loss_dis = []
 
+print('[*] Start train ...')
 for e in range(cfg.EPOCHS):
 
 	toggle = True
@@ -85,7 +87,7 @@ for e in range(cfg.EPOCHS):
 
 		if batch_counter % 1000 == 0:
 			print('')
-			print('Saving weights...')
+			print('Saving weights ...')
 			model_gen.save_weights(cfg.WEIGHTS_GEN, overwrite=True)
 			model_dis.save_weights(cfg.WEIGHTS_DIS, overwrite=True)
 			model_gan.save_weights(cfg.WEIGHTS_GAN, overwrite=True)
@@ -101,3 +103,5 @@ for e in range(cfg.EPOCHS):
 	model_gen.save_weights(cfg.WEIGHTS_GEN, overwrite=True)
 	model_dis.save_weights(cfg.WEIGHTS_DIS, overwrite=True)
 	model_gan.save_weights(cfg.WEIGHTS_GAN, overwrite=True)
+
+print('[!] Successful training.')

@@ -1,13 +1,12 @@
 import argparse
-import time
 import os
+import time
 
 import cv2
 import numpy as np
 from skimage import color
 
 import utils
-import config as cfg
 from model import create_model_gen
 
 
