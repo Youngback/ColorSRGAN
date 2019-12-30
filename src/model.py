@@ -108,10 +108,10 @@ def create_model_dis(input_shape):
     return model
 
 
-def create_model_gan(input_shape_gen, input_shape_orgin, generator, discriminator):
+def create_model_gan(input_shape_gen, input_shape_orgin_gray, generator, discriminator):
 
     input_gen = layers.Input(input_shape_gen)
-    input_origin = layers.Input(input_shape_orgin)
+    input_origin = layers.Input(input_shape_orgin_gray)
 
     gen_out = generator(input_gen)
 
@@ -139,7 +139,7 @@ def create_models(input_shape_gen, output_channels_gen, input_shape_origin, inpu
     # GAN
     model_gan = create_model_gan(
         input_shape_gen=input_shape_gen,
-        input_shape_orgin=input_shape_origin,
+        input_shape_orgin_gray=input_shape_origin,
         generator=model_gen,
         discriminator=model_dis)
 

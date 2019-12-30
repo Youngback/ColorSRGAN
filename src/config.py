@@ -32,7 +32,7 @@ f.close()
 
 file_names = []
 for line in lines:
-    line = os.path.join(GT_PATH, line)
+    line = os.path.join(GT_PATH, line[:-1])
     file_names.append(line)
 
 TOTAL_SIZE = len(lines)

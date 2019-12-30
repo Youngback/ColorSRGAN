@@ -17,10 +17,12 @@ def dir_data_generator(batch_size, data_range=(0, 0), outType='LAB', input_size=
     while True:
         for i in range(0, batch_count):
             images_gt = np.array([cv2.imread(f) for f in names_gt[i * batch_size:i * batch_size + batch_size]])
-            images_dataset = [cv2.resize(img, input_size, interpolation=cv2.INTER_CUBIC) for img in images_gt]
+            images_gt_gray = color.rgb2gray(images_gt)
+            images_dataset = np.array([cv2.resize(img, dsize=input_size, interpolation=cv2.INTER_CUBIC) for img in images_gt])
+            images_dataset_gray = color.rgb2gray(images_dataset)
 
             if outType == 'RGB':
-                yield images_gt, images_dataset[:, :, :, np.newaxis], color.rgb2gray(images_gt)
+                yield images_gt, images_dataset_gray[:, :, :, np.newaxis], images_gt_gray[:, :, :, np.newaxis]
 
             elif outType == 'LAB':
-                yield color.rgb2lab(images_gt), images_dataset[:, :, :, np.newaxis], color.rgb2gray(images_gt)
+                yield color.rgb2lab(images_gt), images_dataset_gray[:, :, :, np.newaxis], images_gt_gray[:, :, :, np.newaxis]

@@ -51,16 +51,16 @@ for e in range(cfg.EPOCHS):
 
 		batch_counter += 1
 
-		data_gt, data, data_gray = next(data_gen)
+		data_gt, data, data_gt_gray = next(data_gen)
 
 		if batch_counter % 2 == 0:
 			toggle = not toggle
 
 			if toggle:
-				x_dis = np.concatenate((model_gen.predict(data), data_gray), axis=3)
+				x_dis = np.concatenate((model_gen.predict(data), data_gt_gray), axis=3)
 				y_dis = np.ones((cfg.BATCH_SIZE, 1)) * .1
 			else:
-				x_dis = np.concatenate((data_gt, data_gray), axis=3)
+				x_dis = np.concatenate((data_gt, data_gt_gray), axis=3)
 				y_dis = np.ones((cfg.BATCH_SIZE, 1)) * .9
 
 			dis_res = model_dis.train_on_batch(x_dis, y_dis)
@@ -68,7 +68,7 @@ for e in range(cfg.EPOCHS):
 		model_dis.trainable = False
 		y_gen = np.ones((cfg.BATCH_SIZE, 1))
 		x_output = data_gt
-		gan_res = model_gan.train_on_batch([data, data_gt], [y_gen, x_output])
+		gan_res = model_gan.train_on_batch([data, data_gt_gray], [y_gen, x_output])
 		model_dis.trainable = True
 
 		progbar.add(
@@ -91,8 +91,8 @@ for e in range(cfg.EPOCHS):
 			model_gan.save_weights(cfg.WEIGHTS_GAN, overwrite=True)
 
 	print('')
-	data_test_gt, data_test, data_test_gray = next(test_data_gen)
-	ev = model_gan.evaluate([data_test, data_test_gt], [np.ones((data_test.shape[0], 1)), data_test_gt])
+	data_test_gt, data_test, data_test_gt_gray = next(test_data_gen)
+	ev = model_gan.evaluate([data_test, data_test_gt_gray], [np.ones((data_test.shape[0], 1)), data_test_gt])
 	ev = np.round(np.array(ev), 4)
 	print('Epoch %s/%s, Time: %s' % (e + 1, cfg.EPOCHS, round(time.time() - start)))
 	print('G total loss: %s - G loss: %s - G L1: %s: pacc: %s - acc: %s' % (ev[0], ev[1], ev[2], ev[5], ev[6]))
