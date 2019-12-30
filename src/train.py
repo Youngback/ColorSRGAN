@@ -58,11 +58,9 @@ for e in range(cfg.EPOCHS):
 
 			if toggle:
 				x_dis = np.concatenate((model_gen.predict(data), data_gray), axis=3)
-				y_dis = np.zeros((cfg.BATCH_SIZE, 1))
 				y_dis = np.ones((cfg.BATCH_SIZE, 1)) * .1
 			else:
 				x_dis = np.concatenate((data_gt, data_gray), axis=3)
-				y_dis = np.ones((cfg.BATCH_SIZE, 1))
 				y_dis = np.ones((cfg.BATCH_SIZE, 1)) * .9
 
 			dis_res = model_dis.train_on_batch(x_dis, y_dis)
