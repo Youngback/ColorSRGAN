@@ -30,6 +30,11 @@ f = open(os.path.join(GT_PATH, 'train.txt'), 'r')
 lines = f.readlines()
 f.close()
 
+file_names = []
+for line in lines:
+    line = os.path.join(GT_PATH, line)
+    file_names.append(line)
+
 TOTAL_SIZE = len(lines)
 TRAIN_SIZE = TOTAL_SIZE // 2
 TEST_SIZE = 100

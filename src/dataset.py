@@ -1,14 +1,16 @@
 
-import glob
-import numpy as np
+import os
+
 import cv2
+import numpy as np
 from skimage import color
 
 import config as cfg
 
+
 def dir_data_generator(batch_size, data_range=(0, 0), outType='LAB'):
 
-    names_gt = np.array(glob.glob(cfg.GT_PATH + '/*.jpg'))
+    names_gt = np.array(os.path.join(cfg.GT_PATH, cfg.lines))
 
     if data_range != (0, 0):
         names_gt = names_gt[data_range[0]:data_range[1]]
