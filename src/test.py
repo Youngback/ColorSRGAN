@@ -13,11 +13,6 @@ from model import create_model_gen
 class Inference:
 
     def __init__(self, weight_path, init_size=(480, 640, 1)):
-	'''
-	inference network initialize
-	:param weight_path: generator weight path
-	:param init_size: input tensor shape (HWC)
-	'''
 
         self.init_size = init_size
 
@@ -29,11 +24,6 @@ class Inference:
             self.model_gen.load_weights(weight_path)
 
     def process(self, img):
-	'''
-	process run
-	:param img: input image
-	:return: result image
-	'''
 
 		# input image reshape
         input_tensor = utils.image_reshape(img, self.init_size)
