@@ -4,7 +4,7 @@ import os
 from utils import create_dir
 
 # TRAIN PARAMETER
-EPOCHS = 100
+EPOCHS = 2
 BATCH_SIZE = 8
 LEARNING_RATE = 0.0005
 MOMENTUM = 0.9
@@ -36,5 +36,5 @@ for line in lines:
     file_names.append(line)
 
 TOTAL_SIZE = len(lines)
-TRAIN_SIZE = TOTAL_SIZE // 2
+TRAIN_SIZE = TOTAL_SIZE // 10
 TEST_SIZE = 100
