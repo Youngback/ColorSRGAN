@@ -71,7 +71,7 @@ def test(args):
 if __name__ == '__main__':
 
 	parser = argparse.ArgumentParser()
-	parser.add_argument('--model', '-M', dest='model', default='./01_GRAY2LAB/gen.hdf5', help='inference network model')
+	parser.add_argument('--model', '-M', dest='model', default='./weights/gen.hdf5', help='inference network model')
 	parser.add_argument('--input', '-I', dest='input', default='./sample_images/', help='input images path')
 	parser.add_argument('--output', '-O', dest='output', default='./sample_images/result/', help='output images path')
 	args = parser.parse_args()
